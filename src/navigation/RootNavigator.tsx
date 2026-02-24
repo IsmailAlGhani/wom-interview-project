@@ -40,7 +40,6 @@ const RootNavigator = () => {
                     headerStyle: { backgroundColor: colors.headerBackground },
                     headerTintColor: colors.headerText,
                     headerTitleStyle: { fontWeight: 'bold' },
-                    headerRight: () => <ThemeToggle />,
                     contentStyle: { backgroundColor: colors.background },
                 }}
             >
@@ -58,7 +57,7 @@ const RootNavigator = () => {
                         <Stack.Screen
                             name="Home"
                             component={HomeScreen}
-                            options={{ title: 'Product Market' }}
+                            options={{ title: 'Product Market', headerRight: () => <ThemeToggle /> }}
                         />
                         <Stack.Screen
                             name="Detail"
