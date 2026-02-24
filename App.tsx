@@ -1,20 +1,52 @@
+import React, { useEffect, useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import RootNavigator from './src/navigation/RootNavigator';
+import { initAuthStore } from './src/store/authStore';
+import { LoadingIndicator } from './src/components/Feedback';
+import { ThemeProvider } from './src/context/ThemeContext';
+import { useThemeStore } from './src/store/themeStore';
 
-export default function App() {
+function AppContent() {
+  const [isReady, setIsReady] = useState(false);
+  const { mode } = useThemeStore();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    const prepare = async () => {
+      try {
+        unsubscribe = await initAuthStore();
+      } catch (e) {
+        console.warn('Auth initialization error:', e);
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    prepare();
+
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
+  if (!isReady) {
+    return <LoadingIndicator />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <RootNavigator />
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
+    </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
