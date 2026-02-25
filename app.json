@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "wom-interview-app",
-    "slug": "wom-interview-app",
+    "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,9 +27,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-web-browser"
-    ],
+    "plugins": ["expo-web-browser"],
     "extra": {
       "eas": {
         "projectId": "e7a1ac97-1c4d-4d6d-9ea1-4b99e4a5ea1c"
